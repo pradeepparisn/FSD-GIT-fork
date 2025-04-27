@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Add Journey - CarbonOmitter</title>
+</head>
+<body>
+    <h1>Add New Journey</h1>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.non_field_errors }}
+        <label for="id_route">Route:</label>
+        {{ form.route.errors }}
+        {{ form.route }}
+        <br/>
+        <label for="id_car">Car:</label>
+        {{ form.car.errors }}
+        {{ form.car }}
+        <br/>
+        <label for="id_journey_date">Journey date:</label>
+        {{ form.journey_date.errors }}
+        {{ form.journey_date }}
+        <br/>
+        <label for="id_trans_mode">Trans mode:</label>
+        {{ form.trans_mode.errors }}
+        {{ form.trans_mode }}
+        <br/>
+        <label for="id_route_save">Route save:</label>
+        {{ form.route_save.errors }}
+        {{ form.route_save }}
+        <br/>
+        <button type="submit">Save Journey</button>
+    </form>
+    <a href="{% url 'journey_list' %}">Back to Journeys</a>
+</body>
+</html>
