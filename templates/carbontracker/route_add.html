@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Add Route - CarbonOmitter</title>
+</head>
+<body>
+    <h1>Add New Route</h1>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Save Route</button>
+    </form>
+    <a href="{% url 'route_list' %}">Back to Routes</a>
+</body>
+</html>
