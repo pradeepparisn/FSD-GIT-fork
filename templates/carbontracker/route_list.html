@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Routes - CarbonOmitter</title>
+</head>
+<body>
+    <h1>Routes</h1>
+    <ul>
+        {% for route in routes %}
+            <li>{{ route.name }} - Total Distance: {{ route.total_distance }} km</li>
+        {% empty %}
+            <li>No routes found.</li>
+        {% endfor %}
+    </ul>
+    <a href="{% url 'route_add' %}">Add New Route</a><br/>
+    <a href="{% url 'home' %}">Back to Home</a>
+</body>
+</html>
