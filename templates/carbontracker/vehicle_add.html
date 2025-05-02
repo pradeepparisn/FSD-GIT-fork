@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Add Vehicle - CarbonOmitter</title>
+</head>
+<body>
+    <h1>Add New Vehicle</h1>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Save Vehicle</button>
+    </form>
+    <a href="{% url 'vehicle_list' %}">Back to Vehicles</a>
+</body>
+</html>

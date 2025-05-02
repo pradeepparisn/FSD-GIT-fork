@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Journeys - CarbonOmitter</title>
+</head>
+<body>
+    <h1>Journeys</h1>
+    <a href="{% url 'journey_add' %}">Add New Journey</a>
+    <ul>
+        {% for journey in journeys %}
+            <li>{{ journey.journey_date }} - {{ journey.trans_mode }} - Emission: {{ journey.total_emission }}</li>
+        {% empty %}
+            <li>No journeys found.</li>
+        {% endfor %}
+    </ul>
+    <a href="{% url 'home' %}">Back to Home</a>
+</body>
+</html>
