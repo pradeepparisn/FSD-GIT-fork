@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Utilities - CarbonOmitter</title>
+</head>
+<body>
+    <h1>Utilities</h1>
+    <a href="{% url 'utility_add' %}">Add New Utility Bill</a>
+    <ul>
+        {% for utility in utilities %}
+            <li>{{ utility.bill_type }} bill from {{ utility.bill_start_date }} to {{ utility.bill_end_date }} - Total Emission: {{ utility.total_emission }}</li>
+        {% empty %}
+            <li>No utility bills found.</li>
+        {% endfor %}
+    </ul>
+    <a href="{% url 'home' %}">Back to Home</a>
+</body>
+</html>
