@@ -23,6 +23,7 @@ class Car(models.Model):
     kg_per_gallon = models.FloatField()
     icon_id = models.IntegerField(null=True, blank=True)
     car_spec = models.ForeignKey(VehicleSpec, on_delete=models.SET_NULL, null=True, blank=True)
+    is_user_vehicle = models.BooleanField(default=False)
 
     def calculate_kg_per_gallon(self):
         if self.fuel_type == "Electricity fuel":
