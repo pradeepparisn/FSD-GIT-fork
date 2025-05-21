@@ -2,16 +2,34 @@
 <html>
 <head>
     <title>Add Journey - CarbonOmitter</title>
+    <style>
+        #map {
+            height: 400px;
+            width: 100%;
+            margin-bottom: 10px;
+        }
+    </style>
 </head>
 <body>
     <h1>Add New Journey</h1>
     <form method="post">
         {% csrf_token %}
         {{ form.non_field_errors }}
-        <label for="id_route">Route:</label>
-        {{ form.route.errors }}
-        {{ form.route }}
+
+        <label for="from_address">From:</label>
+        <input id="from_address" name="from_address" type="text" placeholder="Enter start location" required>
         <br/>
+
+        <label for="to_address">To:</label>
+        <input id="to_address" name="to_address" type="text" placeholder="Enter destination" required>
+        <br/>
+
+        <div id="map"></div>
+
+        <!-- Hidden inputs to store distances -->
+        <input type="hidden" id="city_distance" name="city_distance" value="0">
+        <input type="hidden" id="highway_distance" name="highway_distance" value="0">
+
         <label for="id_car">Car:</label>
         {{ form.car.errors }}
         {{ form.car }}
@@ -31,5 +49,105 @@
         <button type="submit">Save Journey</button>
     </form>
     <a href="{% url 'journey_list' %}">Back to Journeys</a>
+
+    <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&libraries=places&callback=initMap" async defer></script>
+    <script>
+        let map;
+        let fromMarker;
+        let toMarker;
+        let directionsService;
+        let directionsRenderer;
+
+        function initMap() {
+            const defaultLocation = { lat: 49.2827, lng: -123.1207 }; // Example: Vancouver
+
+            map = new google.maps.Map(document.getElementById("map"), {
+                center: defaultLocation,
+                zoom: 10,
+            });
+
+            directionsService = new google.maps.DirectionsService();
+            directionsRenderer = new google.maps.DirectionsRenderer({ map: map });
+
+            const fromInput = document.getElementById("from_address");
+            const toInput = document.getElementById("to_address");
+
+            const fromAutocomplete = new google.maps.places.Autocomplete(fromInput);
+            const toAutocomplete = new google.maps.places.Autocomplete(toInput);
+
+            fromAutocomplete.bindTo("bounds", map);
+            toAutocomplete.bindTo("bounds", map);
+
+            fromAutocomplete.addListener("place_changed", () => {
+                const place = fromAutocomplete.getPlace();
+                if (!place.geometry) {
+                    alert("No details available for input: '" + place.name + "'");
+                    return;
+                }
+                if (fromMarker) fromMarker.setMap(null);
+                fromMarker = new google.maps.Marker({
+                    map: map,
+                    position: place.geometry.location,
+                    label: "A",
+                    draggable: true,
+                });
+                fromMarker.addListener('dragend', calculateAndDisplayRoute);
+                calculateAndDisplayRoute();
+            });
+
+            toAutocomplete.addListener("place_changed", () => {
+                const place = toAutocomplete.getPlace();
+                if (!place.geometry) {
+                    alert("No details available for input: '" + place.name + "'");
+                    return;
+                }
+                if (toMarker) toMarker.setMap(null);
+                toMarker = new google.maps.Marker({
+                    map: map,
+                    position: place.geometry.location,
+                    label: "B",
+                    draggable: true,
+                });
+                toMarker.addListener('dragend', calculateAndDisplayRoute);
+                calculateAndDisplayRoute();
+            });
+        }
+
+        function calculateAndDisplayRoute() {
+            if (!fromMarker || !toMarker) return;
+
+            directionsService.route(
+                {
+                    origin: fromMarker.getPosition(),
+                    destination: toMarker.getPosition(),
+                    travelMode: google.maps.TravelMode.DRIVING,
+                },
+                (response, status) => {
+                    if (status === "OK") {
+                        directionsRenderer.setDirections(response);
+                        const route = response.routes[0];
+                        let cityDistance = 0;
+                        let highwayDistance = 0;
+
+                        // For simplicity, sum all legs distance as cityDistance
+                        // You can enhance this by analyzing step types for city/highway split
+                        route.legs.forEach(leg => {
+                            cityDistance += leg.distance.value; // in meters
+                        });
+
+                        // Convert meters to kilometers
+                        cityDistance = cityDistance / 1000;
+
+                        // Set distances in hidden inputs
+                        document.getElementById("city_distance").value = cityDistance.toFixed(2);
+                        document.getElementById("highway_distance").value = 0;
+
+                    } else {
+                        alert("Directions request failed due to " + status);
+                    }
+                }
+            );
+        }
+    </script>
 </body>
 </html>

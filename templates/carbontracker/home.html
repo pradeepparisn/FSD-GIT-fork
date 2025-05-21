@@ -1,17 +1,19 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>CarbonOmitter - Home</title>
+    <title>EcoTrack - Home</title>
 </head>
 <!-- this is a home file -->
 <body>
-    <h1>Welcome to CarbonOmitter</h1>
+    <h1>Welcome to EcoTrack</h1>
     <nav>
         <ul>
             <li><a href="{% url 'journey_list' %}">Journeys</a></li>
             <li><a href="{% url 'vehicle_list' %}">Vehicles</a></li>
             <li><a href="{% url 'route_list' %}">Routes</a></li>
             <li><a href="{% url 'utility_list' %}">Utilities</a></li>
+            <li><a href="{% url 'fuel_calculator' %}">Fuel Calculator</a></li>
+            <li><a href="{% url 'emission_fuel_charts' %}">Emission & Fuel Charts</a></li>
         </ul>
     </nav>
 </body>

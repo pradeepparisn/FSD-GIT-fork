@@ -5,11 +5,28 @@
 </head>
 <body>
     <h1>Add New Vehicle</h1>
-    <form method="post">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit">Save Vehicle</button>
+
+    <form method="get" action="">
+        {{ search_form.as_p }}
+        <button type="submit">Search</button>
     </form>
+
+    <form method="post" action="">
+        {% csrf_token %}
+        <label for="vehicle_id">Select Vehicle:</label>
+        <select name="vehicle_id" id="vehicle_id" required>
+            <option value="">-- Select a vehicle --</option>
+            {% for vehicle in vehicles %}
+                <option value="{{ vehicle.id }}">{{ vehicle.make }} {{ vehicle.model }} ({{ vehicle.year }})</option>
+            {% endfor %}
+        </select>
+        <br><br>
+        <label for="nickname">Nickname (optional):</label>
+        <input type="text" name="nickname" id="nickname" placeholder="Enter a nickname for your vehicle">
+        <br><br>
+        <button type="submit">Add Vehicle</button>
+    </form>
+
     <a href="{% url 'vehicle_list' %}">Back to Vehicles</a>
 </body>
 </html>
