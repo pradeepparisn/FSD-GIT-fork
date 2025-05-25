@@ -45,6 +45,10 @@ class Route(models.Model):
     city_distance = models.FloatField()
     highway_distance = models.FloatField()
     total_distance = models.FloatField()
+    start_lat = models.FloatField(null=True, blank=True)
+    start_lng = models.FloatField(null=True, blank=True)
+    end_lat = models.FloatField(null=True, blank=True)
+    end_lng = models.FloatField(null=True, blank=True)
 
     def save(self, *args, **kwargs):
         self.total_distance = self.city_distance + self.highway_distance
