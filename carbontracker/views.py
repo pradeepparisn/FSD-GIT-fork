@@ -18,7 +18,15 @@ def journey_list(request):
     journeys = Journey.objects.all()
     return render(request, 'carbontracker/journey_list.html', {'journeys': journeys})
 
+from django.forms import DateField
+from django.forms.widgets import DateInput
+
 class JourneyForm(forms.ModelForm):
+    journey_date = DateField(
+        input_formats=['%d-%m-%Y', '%Y-%m-%d'],
+        widget=DateInput(format='%d-%m-%Y', attrs={'placeholder': 'dd-mm-yyyy'})
+    )
+
     class Meta:
         model = Journey
         fields = ['route', 'car', 'journey_date', 'trans_mode', 'route_save']
