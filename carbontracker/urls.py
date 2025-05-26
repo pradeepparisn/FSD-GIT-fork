@@ -13,4 +13,5 @@ urlpatterns = [
     path('route/add/', views.route_add, name='route_add'),
     path('fuel-calculator/', views.fuel_calculator, name='fuel_calculator'),
     path('emission-fuel-charts/', views.emission_fuel_charts, name='emission_fuel_charts'),
+    path('journeys/add/', views.journey_add, name='journey_add'),
 ]
